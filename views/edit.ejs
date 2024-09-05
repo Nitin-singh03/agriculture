@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Username</title>
+</head>
+<body>
+    <h2>Update username for: <%= user.email %></h2>
+    
+    
+    <form method="post" action="/user/<%=user.id%>?_method=PATCH">
+        
+        <input type="hidden" name="id" value="<%= user.id %>" />
+    
+        <textarea name="username" required><%= user.username %></textarea>
+        <input type="password" name="password" placeholder="Enter password" required />
+        <button>Update</button>
+    </form>
+</body>
+</html>
