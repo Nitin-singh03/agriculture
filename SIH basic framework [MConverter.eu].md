@@ -8,17 +8,19 @@
 
 - Profiles -- image, name, distance, terms
 
+
+
 2.  Login portal --
 
 - Mobile number as login id and password
 
 - Log out every time app exited
 
+  
+
 3.  Sign up page-
 
-- First name
-
-- Last name
+- Full name
 
 - Mobile number
 
@@ -53,7 +55,7 @@
 
 - On click, direct to message box
 
-7.  Analysing page-
+7.  Analysing page-  (website to Tanmay)
 
 - Line graph for all crops growing in particular area for last 5 years
   and next year
@@ -62,11 +64,11 @@
 
 - Search bar
 
-8.  Chatbox --
+8.  Chatbox -- 
 
 - Specification of responder
 
-9.  Self profile --
+9.  Self profile -- 
 
 - Age
 
