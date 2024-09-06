@@ -47,7 +47,24 @@ app.get("/", (req, res) => {
 
 app.get("/user/:id", (req, res) => {
     let { id } = req.params;
-    res.render("index.ejs", { id });
+
+    // Query to fetch user details based on the ID
+    let userQuery = 'SELECT * FROM users WHERE id = ?';
+
+    connection.query(userQuery, [id], (error, results) => {
+        if (error) {
+            console.error('Error fetching user details:', error.stack);
+            return res.send('An error occurred. Please try again.');
+        }
+
+        // Check if user exists
+        if (results.length > 0) {
+            let user = results[0]; // Use 'user' instead of 'userDetails'
+            res.render("index2.ejs", { user });
+        } else {
+            res.send('User not found.');
+        }
+    });
 });
 
 app.get("/user", (req, res) => {
@@ -67,7 +84,7 @@ app.get("/signup", (req, res) =>{
 })
 
 app.post("/signup", (req, res) => {
-    let { username, number, password, cpassword } = req.body;
+    let { username, number, email, aadhar, district, password, cpassword } = req.body;
 
     // Check if passwords match
     if (password !== cpassword) {
@@ -75,7 +92,7 @@ app.post("/signup", (req, res) => {
     }
 
     // First, check if the phone number is already in use
-    let checkNumberQuery = 'SELECT * FROM details WHERE Pnumber = ?';
+    let checkNumberQuery = 'SELECT * FROM users WHERE Pnumber = ?';
 
     connection.query(checkNumberQuery, [number], (error, results) => {
         if (error) {
@@ -88,10 +105,13 @@ app.post("/signup", (req, res) => {
             return res.send('This phone number is already registered. Please use a different number.');
         }
 
-        // If the number does not exist, proceed with the insertion
-        let insertQuery = 'INSERT INTO details (id, username, Pnumber, password) VALUES (?, ?, ?, ?)';
+        // If email is not provided, set it to null
+        email = email || null;
 
-        connection.query(insertQuery, [uuidv4(), username, number, password], (error, results) => {
+        // Proceed with the insertion if the phone number doesn't exist
+        let insertQuery = 'INSERT INTO users (id, username, Pnumber, email, aadhar, district, password) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
+        connection.query(insertQuery, [uuidv4(), username, number, email, aadhar, district, password], (error, results) => {
             if (error) {
                 console.error('Error inserting data:', error.stack);
                 return res.send('An error occurred. Please try again.');
@@ -104,6 +124,7 @@ app.post("/signup", (req, res) => {
 
 
 
+
 app.get("/login", (req, res) =>{
     res.render("LogIn.ejs");
 })
@@ -112,7 +133,7 @@ app.post("/login", (req, res) => {
     let { number, password } = req.body;
 
     // Query to check if the phone number and password match
-    let loginQuery = 'SELECT * FROM details WHERE Pnumber = ? AND password = ?';
+    let loginQuery = 'SELECT * FROM users WHERE Pnumber = ? AND password = ?';
 
     connection.query(loginQuery, [number, password], (error, results) => {
         if (error) {
@@ -133,6 +154,7 @@ app.post("/login", (req, res) => {
 
 
 
+
 app.get("/predict", (req, res) =>{
     res.render("home.ejs");
 })
@@ -141,6 +163,36 @@ app.patch("/user/:id", (req, res) => {
     let { id } = req.params;
     res.render("index.ejs",{id});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // app.get("/user/:id/edit", (req, res) => {
 //     let { id } = req.params;
