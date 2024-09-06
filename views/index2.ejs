@@ -31,11 +31,21 @@
       </form>
 
       <div class="navbar_content">
-        <div><b>Welcome <%= user.username %></b></div>
-        <a href="#" class="nav-link">
+
+        <% if (check == 1) { %>
+          <div><b>Welcome <%= user.username %></b></div>
+          <a href="#" class="nav-link">
             <i class="fa-solid fa-user"></i>
-        </a>
+          </a>
+        <% } else { %>
+          <a href="http://localhost:8080/login" class="nav-link">Log In</a>
+          <a href="http://localhost:8080/signup" class="nav-link">Sign Up</a>
+        <% } %>
+  
       </div>
+
+
+
     </nav>
     <div class="container101">
     <!-- sidebar -->
@@ -188,8 +198,52 @@
               </div>
           </div>
         </section>
+
+        <h1 class="topic">Seeds</h1>
+        <div class="main-div">
+          <% for (let i = 1; i <= 10; i++) { %>
+            <div class="in-content">
+              <div class="img-div"><img src="/7.jpg" class="card-img"></div>
+                <p2 class="card-title">&#x20b9 600</p2>
+                <br><br>
+                <p1 class="card-info">Premium Quality Seeds for Thriving Crops</p1>
+                <br>
+                <p1 class="card-info"><b>Save Extra from Bank Offers *</b></p1>
+            </div>
+          <% } %>
+        </div>
+        <h1 class="topic">Fertilizers</h1>
+        <div class="main-div">
+          <% for (let i = 1; i <= 7; i++) { %>
+            <div class="in-content">
+              <div class="img-div"><img src="/bird_2.jpg" class="card-img"></div>
+                <p2 class="card-title">&#x20b9 1,100</p2>
+                <br><br>
+                <p1 class="card-info">Enhance Your Soil with Premium Fertilizers</p1>
+                <br>
+                <p1 class="card-info"><b>Save Extra from Bank Offers *</b></p1>
+            </div>
+          <% } %>
+        </div> 
+        <h1 class="topic">Farm Equipment</h1>
+        <div class="main-div">
+          <% for (let i = 1; i <= 15; i++) { %>
+            <div class="in-content">
+              <div class="img-div"><img src="/8008657.jpg" class="card-img"></div>
+                <p2 class="card-title">&#x20b9 10,000</p2>
+                <br><br>
+                <p1 class="card-info">Reliable Farm Equipment for Efficient Farming</p1>
+                <br>
+                <p1 class="card-info"><b>Save Extra from Bank Offers *</b></p1>
+            </div>
+          <% } %>
+        </div>
+          <div class="footer"></div>
+            <div class="line"></div>
+          </div>
       </nav>
     </div>
+
 
     <!-- JavaScript -->
     <script>

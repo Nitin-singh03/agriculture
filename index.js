@@ -32,23 +32,12 @@ const connection = mysql.createConnection({
 // };
 
 app.get("/", (req, res) => {
-    // let q = "SELECT count(*) as count FROM user";
-    // connection.query(q, (err, result) => {
-    //     if (err) {
-    //         console.log(err);
-    //         res.send("some error in page");
-    //     } else {
-    //         let count = result[0].count;  // Correct reference to the alias
-    //         res.render("home", { count });  // Render the 'home.ejs' view with 'count'
-    //     }
-    // });
-    res.render("index.ejs");
+    res.render("index2.ejs", { check: 0 });
 });
 
 app.get("/user/:id", (req, res) => {
     let { id } = req.params;
 
-    // Query to fetch user details based on the ID
     let userQuery = 'SELECT * FROM users WHERE id = ?';
 
     connection.query(userQuery, [id], (error, results) => {
@@ -57,10 +46,9 @@ app.get("/user/:id", (req, res) => {
             return res.send('An error occurred. Please try again.');
         }
 
-        // Check if user exists
         if (results.length > 0) {
-            let user = results[0]; // Use 'user' instead of 'userDetails'
-            res.render("index2.ejs", { user });
+            let user = results[0]; 
+            res.render("index2.ejs", { user, check: 1 });
         } else {
             res.send('User not found.');
         }
@@ -111,13 +99,14 @@ app.post("/signup", (req, res) => {
         // Proceed with the insertion if the phone number doesn't exist
         let insertQuery = 'INSERT INTO users (id, username, Pnumber, email, aadhar, district, password) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-        connection.query(insertQuery, [uuidv4(), username, number, email, aadhar, district, password], (error, results) => {
+        let id = uuidv4();
+        connection.query(insertQuery, [id, username, number, email, aadhar, district, password], (error, results) => {
             if (error) {
                 console.error('Error inserting data:', error.stack);
                 return res.send('An error occurred. Please try again.');
             }
 
-            res.send('User signed up successfully!');
+            res.redirect(`/user/${id}`);
         });
     });
 });
@@ -159,10 +148,10 @@ app.get("/predict", (req, res) =>{
     res.render("home.ejs");
 })
 
-app.patch("/user/:id", (req, res) => {
-    let { id } = req.params;
-    res.render("index.ejs",{id});
-});
+// app.patch("/user/:id", (req, res) => {
+//     let { id } = req.params;
+//     res.render("index.ejs",{id});
+// });
 
 
 
