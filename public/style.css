@@ -5,6 +5,11 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --white-color: #fff;
   --blue-color: #3a8915;
@@ -122,7 +127,7 @@ body {
   content: "Dashboard";
 }
 .menu_editor::before {
-  content: "Editor";
+  content: "Features";
 }
 .menu_setting::before {
   content: "Setting";
@@ -249,14 +254,15 @@ body {
   align-items: center;
   padding: 11px;
   border-radius: 28px;
-  background-color: #f6f6f6;
+  background-color: #f0efef;
   width: 30rem;
   transition: box-shadow 0.25s;
 }
 
 .search-input::placeholder,
 .search-icon {
-  color: rgba(0,0,0,0.5);
+  color: inherit;
+  border: none;
 }
 
 .search-input{
@@ -401,6 +407,7 @@ body {
 
 .card-img{
   width: 100%;
+  height: 200px;
 }
 
 .img-div{
@@ -425,6 +432,73 @@ body {
   text-decoration: underline;
 }
 
+.product-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.in-content {
+  cursor: pointer;
+  /* Additional styling to ensure the div looks clickable */
+}
+
+#results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.product {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  width: 75%;
+  height: 175px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product:hover {
+  transform: scale(1.05); /* Slightly increase the size */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a box-shadow on hover */
+}
+
+
+.product h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.product p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.product img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.in-product ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.in-product ul li {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
 .footer{
   height: 300px;
   display: flex;
@@ -438,6 +512,105 @@ body {
   border-top: 3px solid rgb(39, 39, 39);
   opacity: 0.4;
 }
+
+.search-result{
+  display: flex;
+  flex-direction: row;
+  
+}
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.adjust{
+  width: 1px;
+  background-color: inherit;
+}
+
+/* Ensure the form is displayed as a flex container */
+.search-form {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  gap: 15px; /* Space between the search bar and sort section */
+  /* width: 100%; Full width of the container */
+  max-width: 1200px; /* Adjust as needed for your layout */
+  margin: 0 auto; /* Center the form within its container */
+}
+
+/* Style for the search bar */
+.search {
+  display: flex;
+  align-items: center;
+  background-color: #f0efef;
+  border-radius: 28px;
+  padding: 8px;
+  flex: 1; /* Allow search bar to take available space */
+}
+
+/* Style for the search input */
+.search-input {
+  border: none;
+  padding: 8px;
+  border-radius: 28px;
+  flex: 1;
+  outline: none;
+  background: transparent;
+}
+
+/* Style for the search button */
+.search-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 24px;
+}
+
+/* Style for the sort filter section */
+.sort-filter {
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure the filter option is styled */
+.filter-option {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  max-width: 200px; /* Adjust width as needed */
+}
+
+
+
+/* Adjustments for responsive design */
+@media screen and (max-width: 768px) {
+  .search {
+    width: 100%; /* Make the search bar full width on smaller screens */
+  }
+  .filter-option {
+    max-width: 150px; /* Adjust width for smaller screens */
+  }
+}
+
+
+
+/* Ensure responsive behavior */
+@media screen and (max-width: 768px) {
+  .search {
+    width: 200px; /* Adjust width for smaller screens */
+  }
+  .filter-option {
+    max-width: 150px; /* Adjust width for smaller screens */
+  }
+}
+
+
 
 @media screen and (max-width: 900px){
   .search{

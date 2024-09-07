@@ -6,7 +6,7 @@
     <!-- Boxicons CSS -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <title>AgroGuide</title>
-    <link rel="icon"  href="/logo.png">
+    <link rel="icon" href="/logo.png">
     <link rel="stylesheet" href="/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,82 +19,40 @@
     <nav class="navbar">
       <div class="logo_item">
         <i class="bx bx-menu" id="sidebarOpen"></i>
-        <img src="/logo.png" alt=""></i>AgroGuide
+        <img src="/logo.png" alt="">AgroGuide
       </div>
-
-      <form action="/search" method="GET">
+      <form action="/search" method="GET" class="search-form">
+        
         <div class="search">
           <button class="search-icon" type="submit">
             <span class="material-symbols-outlined">search</span>
         </button>
-            <input class="search-input" type="search" name="query" placeholder="Search for products">
+            <input class="search-input" type="search" name="query" placeholder="Search for products" value="<%= query %>">
 
         </div>
+    
+        <!-- Sort Section -->
+        <div class="sort-filter">
+            <div class="filter-option sort-by">
+                <label for="sort">Sort by Price:</label>
+                <select id="sort" name="sort" onchange="this.form.submit()">
+                    <option value="">Sort by</option>
+                    <option value="low-high" <%= sort === 'low-high' ? 'selected' : '' %>>Price: Low to High</option>
+                    <option value="high-low" <%= sort === 'high-low' ? 'selected' : '' %>>Price: High to Low</option>
+                </select>
+            </div>
+        </div>
     </form>
+    <div class="adjust">
 
-      <div class="navbar_content">
-
-        <% if (check == 1) { %>
-          <div><b>Welcome <%= user.username %></b></div>
-          <a href="#" class="nav-link">
-            <i class="fa-solid fa-user"></i>
-          </a>
-        <% } else { %>
-          <a href="http://localhost:8080/login" class="nav-link">Log In</a>
-          <a href="http://localhost:8080/signup" class="nav-link">Sign Up</a>
-        <% } %>
-  
-      </div>
-
-
-
+    </di>
     </nav>
     <div class="container101">
-    <!-- sidebar -->
+      <!-- sidebar -->
       <nav class="sidebar">
         <div class="menu_content">
           <ul class="menu_items">
-            <div class="menu_title menu_dahsboard"></div>
-            <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-            <!-- start -->
-            <li class="item">
-              <div class="nav_link submenu_item">
-                <span class="navlink_icon">
-                  <i class="bx bx-home-alt"></i>
-                </span>
-                <a href="#Home" class="Home"></a>
-                <span class="navlink">Home</span>
-              </div>
-
-            </li>
-            <!-- end -->
-
-            <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
-            <!-- start -->
-            <li class="item">
-              <div href="#" class="nav_link submenu_item">
-                <span class="navlink_icon">
-                  <i class="bx bx-grid-alt"></i>
-                </span>
-                <span class="navlink">Overview</span>
-                <i class="bx bx-chevron-right arrow-left"></i>
-              </div>
-
-              <ul class="menu_items submenu">
-                <% Object.keys(groupedProducts).forEach(category => { %>
-                    <a href="#<%= category.trim().split(' ')[0].toLowerCase() %>" class="nav_link sublink">
-                        <li><%= category %></li>
-                    </a>
-                <% }) %>
-            </ul>
-            </li>
-            <!-- end -->
-          </ul>
-
-          <ul class="menu_items">
             <div class="menu_title menu_editor"></div>
-            <!-- duplicate these li tag if you want to add or remove navlink only -->
-            <!-- Start -->
             <li class="item">
               <a href="#" class="nav_link">
                 <span class="navlink_icon">
@@ -103,8 +61,6 @@
                 <span class="navlink">Prediction</span>
               </a>
             </li>
-            <!-- End -->
-
             <li class="item">
               <a href="#" class="nav_link">
                 <span class="navlink_icon">
@@ -154,7 +110,7 @@
           <div class="bottom_content">
             <div class="bottom expand_sidebar">
               <span> Expand</span>
-              <i class='bx bx-log-in' ></i>
+              <i class='bx bx-log-in'></i>
             </div>
             <div class="bottom collapse_sidebar">
               <span> Collapse</span>
@@ -165,50 +121,31 @@
       </nav>
 
       <nav class="main-content" id="Home">
-        <section  class="container">
-          <div class="slider-wrapper">
-              <div class="slider">
-                  <img id="slide-1" src="/offer1.jpg" alt="Offer1">
-                  <img id="slide-2" src="/offer2.jpg" alt="Offer2">
-                  <img id="slide-3" src="/offer3.jpg" alt="Offer3">
-                  <div class="slider-nav">
-                      <a href="#slide-1"></a>
-                      <a href="#slide-2"></a>
-                      <a href="#slide-3"></a>
-                  </div>
-              </div>
-          </div>
-        </section>
-
-        <% Object.keys(groupedProducts).forEach(category => { %>
-          <h1 id="<%= category.trim().split(' ')[0].toLowerCase() %>" class="topic"><%= category %></h1>
-          <div class="main-div">
-            <% groupedProducts[category].forEach(product => { %>
-              <a href="/product/<%= product.id %>" class="product-link">
-                <div class="in-content">
-                  <div class="img-div">
-                    <img src="/products/<%= product.type %>.jpg" class="card-img" alt="<%= product.type %>">
-                  </div>
-                  <p2 class="card-title">&#x20b9 <%= product.price %></p2>
-                  <br><br>
-                  <p1 class="card-title"><%= product.type %></p1>
-                  <br>
-                  <p1 class="card-info"><%= product.small_description %></p1>
-                  <br>
-                  <p1 class="card-info"><b>Company:</b> <%= product.company_name %></p1>
-                </div>
-              </a>
-            <% }) %>
-          </div>
-        <% }) %>
-
+        <br><br>
+        <section >
+          <% products.forEach(function(product) { %>
+            <a href="/product/<%= product.id %>" class="product-link">
+            <div class="product" data-price="<%= product.price %>" data-category="<%= product.category %>">
+                    <img src="/products/<%= product.type %>.jpg" alt="<%= product.type %>">
+                    <span class="in-product">
+                        <ul>
+                            <li>Type: <%= product.type %></li>
+                            <li>Description: <%= product.small_description %></li>
+                            <li>Company: <%= product.company_name %></li>
+                            <li>Location: <%= product.seller_district %></li>
+                        </ul>
+                    </span>
+                    <p>Price: &#x20b9 <%= product.price %></p>
+                <!-- </a> Correctly closing the anchor tag after all content inside the div -->
+            </div>
+          </a>
+        <% }); %>
         
-          <div class="footer"></div>
-            <div class="line"></div>
-          </div>
+        
+      </section>
+      
       </nav>
     </div>
-
 
     <!-- JavaScript -->
     <script>
@@ -239,8 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-
-
 sidebarOpen.addEventListener("click", () => sidebar.classList.toggle("close"));
 
 sidebarClose.addEventListener("click", () => {
@@ -265,8 +200,6 @@ submenuItems.forEach((item, index) => {
 if (window.innerWidth < 768) {
   sidebar.classList.add("close");
 }
-
-
     </script>
   </body>
 </html>
