@@ -52,6 +52,12 @@ body {
   font-weight: 500;
   color: var(--blue-color);
 }
+
+.logo_item a{
+  text-decoration: none;
+  color: #3a8915;
+}
+
 .navbar img {
   width: 35px;
   height: 35px;

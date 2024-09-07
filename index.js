@@ -54,6 +54,29 @@ app.get('/product/:id', (req, res) => {
     });
   });
   
+  app.get('/contract/:id', (req, res) => {
+    const productId = req.params.id;
+    
+    // Query the database to get the product details
+    const query = 'SELECT * FROM contract_farming WHERE id = ?';
+    
+    connection.query(query, [productId], (err, results) => {
+      if (err) {
+        return res.status(500).send('Server Error');
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).send('Product Not Found');
+      }
+      
+      const con = results[0];
+      
+      // Render the product detail page with the product data
+      res.render('contractor', {
+        contract: con
+      });
+    });
+  });
 
 app.get('/', (req, res) => {
     const sql = 'SELECT * FROM products';
@@ -122,6 +145,44 @@ app.get("/user", (req, res) => {
         }
     });
 });
+
+app.get('/contract_search', (req, res) => {
+    const query = req.query.query || '';
+    const sort = req.query.sort || '';
+  
+    // Base SQL query
+    let sql = 'SELECT * FROM contract_farming WHERE constructor_name LIKE ? OR district LIKE ?';
+    
+    // Adding sorting to SQL query based on user selection
+    if (sort === 'small-large') {
+      sql += ' ORDER BY area ASC';
+    } else if (sort === 'large-small') {
+      sql += ' ORDER BY area DESC';
+    }
+    
+    // Execute query with parameters
+    connection.query(sql, [`%${query}%`, `%${query}%`], (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        res.status(500).send('Server error');
+        return;
+      }
+      
+      // Log results for debugging
+      console.log({ results });
+  
+      // Render the results using EJS template
+      res.render('contractor_search', { 
+        contracts: results,
+        query: query,
+        sort: sort
+      });
+    });
+});
+
+  
+
+
 
 app.get("/signup", (req, res) =>{
     res.render("SignUp.ejs");
@@ -208,16 +269,6 @@ app.get('/search', (req, res) => {
     let query = `SELECT * FROM products WHERE (category LIKE ? OR type LIKE ?)`;
     let queryParams = [`%${searchQuery}%`, `%${searchQuery}%`];
 
-    if (district && district !== 'all') {
-        query += ` AND seller_district = ?`;
-        queryParams.push(district);
-    }
-
-    if (company && company !== 'all') {
-        query += ` AND company_name = ?`;
-        queryParams.push(company);
-    }
-
     if (sort) {
         if (sort === 'low-high') {
             query += ` ORDER BY price ASC`;
@@ -251,6 +302,9 @@ app.get('/search', (req, res) => {
         });
     });
 });
+
+
+
 
 
 

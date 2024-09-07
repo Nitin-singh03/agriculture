@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= contract.terms %> - Product Details</title>
+    <link rel="stylesheet" href="/Pstyle.css">
+    <link rel="icon"  href="/logo.png">
+</head>
+<body>
+    <div class="product-container">
+        <div class="product-image">
+            <img src="/profile.jpg" alt="Product Image">
+        </div>
+        <div class="product-details">
+            <h1><%= contract.constructor_name %></h1>
+            <p><strong>Rate:</strong> <%=contract.rent%> <%= contract.rent_type%> </p>
+            <p><strong>Area:</strong> <%= contract.area %></p>
+            <p><strong>Description:</strong> <%= contract.terms %></p>
+
+            <h2>Seller Information</h2>
+            <p><strong>Seller Name:</strong> <%= contract.constructor_name %></p>
+            <p><strong>Mobile:</strong> <%= contract.phone_number%></p>
+            <p><strong>Email:</strong> <%= contract.email %></p>
+            <p><strong>District:</strong> <%= contract.district %></p>
+        </div>
+    </div>
+</body>
+</html>
