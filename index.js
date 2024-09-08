@@ -397,11 +397,33 @@ app.patch('/user/:id', (req, res) => {
     });
 });
 
+app.get("/chat/:id", (req, res) => {
+    let { id } = req.params;
 
+    let q = 'SELECT * FROM products WHERE id = ?';
+    connection.query(q, [id], (err, product) => {
+        if (err) {
+            console.log(err);
+            res.send("Some error occurred while fetching the user's profile.");
+        } else {
+            res.render("chatbox.ejs", { name: product[0].seller_name });  // Assuming the query returns one user
+        }
+    });
+});
 
+app.get("/chat1/:id", (req, res) => {
+    let { id } = req.params;
 
-
-
+    let q = 'SELECT * FROM contract_farming WHERE id = ?';
+    connection.query(q, [id], (err, product) => {
+        if (err) {
+            console.log(err);
+            res.send("Some error occurred while fetching the user's profile.");
+        } else {
+            res.render("chatbox.ejs", { name: product[0].constructor_name });  // Assuming the query returns one user
+        }
+    });
+});
 
 
 

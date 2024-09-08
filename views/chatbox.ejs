@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Box</title>
+    <link rel="icon"  href="/logo.png">
     <style>
       body,
       html {
@@ -27,6 +28,8 @@
         padding: 10px;
         background-color: #ffffff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    top: 75px;
       }
 
       .chat-box {
@@ -69,12 +72,88 @@
       }
 
       .input-container button:hover {
-        background-color: #45a049;
+        background-color: #323b33;
       }
+      .name {
+    font-size: 1.5em; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    color: #3d453d; /* Set a vibrant color */
+    text-align: center; /* Center-align the name */
+    margin-bottom: 20px; /* Add spacing below the name */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Add a subtle text shadow */
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  background-color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  z-index: 1000;
+  box-shadow: 0 0 2px var(--grey-color-light);
+}
+.logo_item {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--blue-color);
+}
+
+.logo_item a{
+  text-decoration: none;
+  color: #3a8915;
+}
+
+.navbar img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    z-index: 1000;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  */
+  }
+  
+  .logo_item {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+  
+      
     </style>
   </head>
   <body>
+    <nav class="navbar">
+      <div class="logo_item ">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <a href="javascript:history.back()">
+          <img src="/logo.png" alt="">
+        </a>
+        <a href="javascript:history.back()">AgroGuide</a>
+      </div>
+    </nav>
     <div class="chat-container">
+      <div class="name"><%=name%></div>
       <!-- Chat Box (Message Area) -->
       <div class="chat-box" id="chat-box">
         <div class="message">Hello! How can I help you?</div>

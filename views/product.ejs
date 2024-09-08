@@ -25,6 +25,11 @@
             <p><strong>Mobile:</strong> <%= product.seller_mobile %></p>
             <p><strong>Email:</strong> <%= product.seller_email %></p>
             <p><strong>District:</strong> <%= product.seller_district %></p>
+
+            <div class="contact-button-container">
+                <a href="mailto:<%= product.seller_email %>" class="contact-button">Mail</a>
+                <a href="http://localhost:8080/chat/<%=product.id%>" class="contact-button">Message</a>
+            </div>
         </div>
     </div>
 </body>
