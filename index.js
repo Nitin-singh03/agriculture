@@ -30,10 +30,73 @@ const connection = mysql.createConnection({
 //         password: faker.internet.password(),
 //     };
 // };
+app.get('/product/:id', (req, res) => {
+    const productId = req.params.id;
+    
+    // Query the database to get the product details
+    const query = 'SELECT * FROM products WHERE id = ?';
+    
+    connection.query(query, [productId], (err, results) => {
+      if (err) {
+        return res.status(500).send('Server Error');
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).send('Product Not Found');
+      }
+      
+      const product = results[0];
+      
+      // Render the product detail page with the product data
+      res.render('product', {
+        product: product
+      });
+    });
+  });
+  
+  app.get('/contract/:id', (req, res) => {
+    const productId = req.params.id;
+    
+    // Query the database to get the product details
+    const query = 'SELECT * FROM contract_farming WHERE id = ?';
+    
+    connection.query(query, [productId], (err, results) => {
+      if (err) {
+        return res.status(500).send('Server Error');
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).send('Product Not Found');
+      }
+      
+      const con = results[0];
+      
+      // Render the product detail page with the product data
+      res.render('contractor', {
+        contract: con
+      });
+    });
+  });
 
-app.get("/", (req, res) => {
-    res.render("index2.ejs", { check: 0 });
+app.get('/', (req, res) => {
+    const sql = 'SELECT * FROM products';
+    connection.query(sql, (err, results) => {
+        if (err) throw err;
+
+        // Group products by category
+        const groupedProducts = results.reduce((acc, product) => {
+            if (!acc[product.category]) {
+                acc[product.category] = [];
+            }
+            acc[product.category].push(product);
+            return acc;
+        }, {});
+
+        // Render the EJS template with grouped products
+        res.render('index2.ejs', { groupedProducts, check: 0 });
+    });
 });
+
 
 app.get("/user/:id", (req, res) => {
     let { id } = req.params;
@@ -48,7 +111,23 @@ app.get("/user/:id", (req, res) => {
 
         if (results.length > 0) {
             let user = results[0]; 
-            res.render("index2.ejs", { user, check: 1 });
+            const sql = 'SELECT * FROM products';
+            connection.query(sql, (err, results) => {
+                if (err) throw err;
+        
+                // Group products by category
+                const groupedProducts = results.reduce((acc, product) => {
+                    if (!acc[product.category]) {
+                        acc[product.category] = [];
+                    }
+                    acc[product.category].push(product);
+                    return acc;
+                }, {});
+        
+                // Render the EJS template with grouped products
+                res.render('index2.ejs', {user, groupedProducts, check: 1 });
+            });
+            // res.render("index2.ejs", { user, check: 1 });
         } else {
             res.send('User not found.');
         }
@@ -66,6 +145,44 @@ app.get("/user", (req, res) => {
         }
     });
 });
+
+app.get('/contract_search', (req, res) => {
+    const query = req.query.query || '';
+    const sort = req.query.sort || '';
+  
+    // Base SQL query
+    let sql = 'SELECT * FROM contract_farming WHERE constructor_name LIKE ? OR district LIKE ?';
+    
+    // Adding sorting to SQL query based on user selection
+    if (sort === 'small-large') {
+      sql += ' ORDER BY area ASC';
+    } else if (sort === 'large-small') {
+      sql += ' ORDER BY area DESC';
+    }
+    
+    // Execute query with parameters
+    connection.query(sql, [`%${query}%`, `%${query}%`], (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        res.status(500).send('Server error');
+        return;
+      }
+      
+      // Log results for debugging
+      console.log({ results });
+  
+      // Render the results using EJS template
+      res.render('contractor_search', { 
+        contracts: results,
+        query: query,
+        sort: sort
+      });
+    });
+});
+
+  
+
+
 
 app.get("/signup", (req, res) =>{
     res.render("SignUp.ejs");
@@ -143,6 +260,56 @@ app.post("/login", (req, res) => {
 
 
 
+app.get('/search', (req, res) => {
+    const searchQuery = req.query.query || '';
+    const sort = req.query.sort || '';
+    const district = req.query.district || 'all';
+    const company = req.query.company || 'all';
+
+    let query = `SELECT * FROM products WHERE (category LIKE ? OR type LIKE ?)`;
+    let queryParams = [`%${searchQuery}%`, `%${searchQuery}%`];
+
+    if (sort) {
+        if (sort === 'low-high') {
+            query += ` ORDER BY price ASC`;
+        } else if (sort === 'high-low') {
+            query += ` ORDER BY price DESC`;
+        }
+    }
+
+    connection.query(query, queryParams, (err, results) => {
+        if (err) throw err;
+
+        const companyQuery = `SELECT DISTINCT company_name FROM products`;
+        const districtQuery = `SELECT DISTINCT seller_district FROM products`;
+
+        connection.query(companyQuery, (err, companies) => {
+            if (err) throw err;
+
+            connection.query(districtQuery, (err, districts) => {
+                if (err) throw err;
+
+                res.render('search_result', { 
+                    products: results,
+                    companies: companies.map(c => c.company_name),
+                    districts: districts.map(d => d.seller_district),
+                    query: searchQuery,    // Ensure query is included here
+                    sort: sort,            // Include sort for selected options
+                    district: district,    // Include selected district
+                    company: company       // Include selected company
+                });
+            });
+        });
+    });
+});
+
+
+
+
+
+
+
+
 
 app.get("/predict", (req, res) =>{
     res.render("home.ejs");
@@ -154,7 +321,27 @@ app.get("/predict", (req, res) =>{
 // });
 
 
-
+// Retrieve products from the database
+app.get('/search', (req, res) => {
+    const query = req.query.query;
+    const sort = req.query.sort;
+    
+    // Retrieve products from the database
+    let filteredProducts = getProductsFromDatabase(); // Assume this function fetches all products
+    
+    // Apply sorting
+    if (sort === 'low-high') {
+        filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sort === 'high-low') {
+        filteredProducts.sort((a, b) => b.price - a.price);
+    }
+    
+    // Render results
+    res.render('searchResults', { products: filteredProducts, query, sort });
+    });
+      
+  
+  
 
 
 
