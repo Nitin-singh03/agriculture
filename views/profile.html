@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+      .navbar {
+        background-color: #45a049;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .navbar img {
+        height: 50px; /* Adjust the size as needed */
+        margin-right: 20px;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: bold;
+        padding-bottom: 10px;
+      }
+      .navbar a:hover {
+        text-decoration: underline;
+      }
+      .profile-tab {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        justify-content: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; /* Space below the profile tab */
+      }
+      .profile-tab img {
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        margin-right: 15px;
+        align-items: center;
+      }
+      .profile-tab p {
+        color: white;
+        font-size: 24px;
+        margin: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .form-group input[type="file"] {
+        padding: 3px;
+      }
+      .form-group .photo-preview {
+        max-width: 150px;
+        border-radius: 4px;
+      }
+      .form-group textarea {
+        resize: vertical;
+      }
+      .form-group button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+      }
+      .form-group button:hover {
+        background-color: #45a049;
+      }
+      .editable {
+        display: none;
+      }
+      .profile-info.editing {
+        display: none;
+      }
+      .editable.editing {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo_item">
+        <i class="bx bx-menu" id="sidebarOpen"></i>
+        <a href="javascript:history.back()">
+          <img src="../public/logo.png" alt="Logo" />
+        </a>
+        <a id="Title" href="javascript:history.back()">AgroGuide</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Profile Page</h1>
+
+      <!-- Profile Tab -->
+      <div class="profile-tab">
+        <img
+          id="profile-tab-img"
+          src="../public/profile.jpg"
+          alt="Profile Photo"
+        />
+      </div>
+
+      <!-- Profile Information View -->
+      <div class="profile-info">
+        <div class="form-group">
+          <label for="view-first-name">First Name</label>
+          <p id="view-first-name">John</p>
+        </div>
+        <div class="form-group">
+          <label for="view-last-name">Last Name</label>
+          <p id="view-last-name">Doe</p>
+        </div>
+        <div class="form-group">
+          <label for="view-age">Age</label>
+          <p id="view-age">30</p>
+        </div>
+        <div class="form-group">
+          <label for="view-mobile-number">Mobile Number</label>
+          <p id="view-mobile-number">1234567890</p>
+        </div>
+        <div class="form-group">
+          <label for="view-email">Email ID (Optional)</label>
+          <p id="view-email">john.doe@example.com</p>
+        </div>
+        <div class="form-group">
+          <label for="view-aadhar-number">Aadhar Number</label>
+          <p id="view-aadhar-number">123412341234</p>
+        </div>
+        <div class="form-group">
+          <label for="view-district">District</label>
+          <p id="view-district">District Name</p>
+        </div>
+        <div class="form-group">
+          <label for="view-description">Description</label>
+          <p id="view-description">
+            This is a brief description about yourself.
+          </p>
+        </div>
+        <div class="form-group">
+          <button onclick="toggleEdit()">Edit</button>
+        </div>
+      </div>
+
+      <!-- Editable Form View -->
+      <form
+        class="editable"
+        id="profile-form"
+        action="#"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            id="first-name"
+            name="first-name"
+            value="John"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="last-name"
+            value="Doe"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            value="30"
+            required
+            min="1"
+          />
+        </div>
+        <div class="form-group">
+          <label for="mobile-number">Mobile Number</label>
+          <input
+            type="tel"
+            id="mobile-number"
+            name="mobile-number"
+            value="1234567890"
+            required
+            pattern="[0-9]{10}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email ID (Optional)</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="john.doe@example.com"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="********"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="aadhar-number">Aadhar Number</label>
+          <input
+            type="text"
+            id="aadhar-number"
+            name="aadhar-number"
+            value="123412341234"
+            required
+            pattern="[0-9]{12}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="district">District</label>
+          <input
+            type="text"
+            id="district"
+            name="district"
+            value="District Name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input
+            type="file"
+            id="photo"
+            name="photo"
+            accept="image/*"
+            onchange="previewPhoto()"
+          />
+          <!-- Example of a photo preview -->
+          <img
+            id="photo-preview"
+            src="path/to/photo.jpg"
+            alt="Photo Preview"
+            class="photo-preview"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="4" required>
+This is a brief description about yourself.</textarea
+          >
+        </div>
+        <div class="form-group">
+          <button type="button" onclick="saveChanges()">Save Changes</button>
+          <button type="button" onclick="toggleEdit()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function toggleEdit() {
+        var profileInfo = document.querySelector(".profile-info");
+        var editableForm = document.querySelector(".editable");
+        profileInfo.classList.toggle("editing");
+        editableForm.classList.toggle("editing");
+      }
+
+      function saveChanges() {
+        // Get values from the form
+        var firstName = document.getElementById("first-name").value;
+        var lastName = document.getElementById("last-name").value;
+        var age = document.getElementById("age").value;
+        var mobileNumber = document.getElementById("mobile-number").value;
+        var email = document.getElementById("email").value;
+        var aadharNumber = document.getElementById("aadhar-number").value;
+        var district = document.getElementById("district").value;
+        var description = document.getElementById("description").value;
+        var photoFile = document.getElementById("photo").files[0];
+
+        // Update profile info view
+        document.getElementById("view-first-name").innerText = firstName;
+        document.getElementById("view-last-name").innerText = lastName;
+        document.getElementById("view-age").innerText = age;
+        document.getElementById("view-mobile-number").innerText = mobileNumber;
+        document.getElementById("view-email").innerText = email;
+        document.getElementById("view-aadhar-number").innerText = aadharNumber;
+        document.getElementById("view-district").innerText = district;
+        document.getElementById("view-description").innerText = description;
+
+        // Update profile tab image if a new photo is uploaded
+        if (photoFile) {
+          document.getElementById("profile-tab-img").src =
+            URL.createObjectURL(photoFile);
+        }
+
+        // Toggle back to profile view
+        toggleEdit();
+      }
+
+      function previewPhoto() {
+        var file = document.getElementById("photo").files[0];
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("photo-preview").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
