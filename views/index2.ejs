@@ -36,7 +36,7 @@
 
         <% if (check == 1) { %>
           <div><b>Welcome <%= user.username %></b></div>
-          <a href="#" class="nav-link">
+          <a href="http://localhost:8080/user/<%=user.id%>/profile" class="nav-link">
             <i class="fa-solid fa-user"></i>
           </a>
         <% } else { %>

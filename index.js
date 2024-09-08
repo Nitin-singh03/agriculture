@@ -30,6 +30,9 @@ const connection = mysql.createConnection({
 //         password: faker.internet.password(),
 //     };
 // };
+
+
+
 app.get('/product/:id', (req, res) => {
     const productId = req.params.id;
     
@@ -134,17 +137,20 @@ app.get("/user/:id", (req, res) => {
     });
 });
 
-app.get("/user", (req, res) => {
-    let q = "SELECT * FROM user";
-    connection.query(q, (err, user) => {
+app.get("/user/:id/profile", (req, res) => {
+    let { id } = req.params;
+
+    let q = 'SELECT * FROM users WHERE id = ?';
+    connection.query(q, [id], (err, user) => {
         if (err) {
             console.log(err);
-            res.send("some error in page");
+            res.send("Some error occurred while fetching the user's profile.");
         } else {
-            res.render("showusers.ejs", {user});  // Render the 'showusers.ejs' view with 'users'
+            res.render("profile.ejs", { user: user[0] });  // Assuming the query returns one user
         }
     });
 });
+
 
 app.get('/contract_search', (req, res) => {
     const query = req.query.query || '';
@@ -168,8 +174,6 @@ app.get('/contract_search', (req, res) => {
         return;
       }
       
-      // Log results for debugging
-      console.log({ results });
   
       // Render the results using EJS template
       res.render('contractor_search', { 
@@ -227,6 +231,10 @@ app.post("/signup", (req, res) => {
         });
     });
 });
+
+
+// Route to handle the form submission and update the user
+
 
 
 
@@ -304,13 +312,6 @@ app.get('/search', (req, res) => {
 });
 
 
-
-
-
-
-
-
-
 app.get("/predict", (req, res) =>{
     res.render("analyzer.ejs");
 })
@@ -338,10 +339,65 @@ app.get('/search', (req, res) => {
     
     // Render results
     res.render('searchResults', { products: filteredProducts, query, sort });
-    });
+});
       
-  
-  
+app.patch('/user/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, number, email, aadhar, district, currentPassword, newPassword, confirmPassword } = req.body;
+    
+    console.log('Update request:', { name, number, email, aadhar, district, currentPassword, newPassword, confirmPassword });
+
+    // Verify the user's current password
+    const getUserQuery = 'SELECT * FROM users WHERE id = ?';
+
+    connection.query(getUserQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching user for validation:', err);
+            return res.send('An error occurred. Please try again.');
+        }
+
+        if (result.length === 0) {
+            return res.send('User not found.');
+        }
+
+        const user = result[0];
+        console.log('Fetched user from DB:', user);
+
+        // Validate the current password
+        if (currentPassword !== user.password) {
+            return res.send('Incorrect current password. Update failed.');
+        }
+
+        // Validate new password and confirmation
+        let passwordToUpdate = user.password;  // Keep the old password by default
+
+        if (newPassword) {
+            if (newPassword !== confirmPassword) {
+                return res.send('New password and confirmation do not match.');
+            }
+            passwordToUpdate = newPassword;
+        }
+
+        // Proceed with updating the user's details
+        const updateQuery = `
+            UPDATE users 
+            SET username = ?, Pnumber = ?, email = ?, aadhar = ?, district = ?, password = ? 
+            WHERE id = ?
+        `;
+        const updateValues = [name, number, email || null, aadhar, district, passwordToUpdate, id];
+
+        connection.query(updateQuery, updateValues, (err, result) => {
+            if (err) {
+                console.error('Error updating user:', err);
+                return res.send('An error occurred while updating. Please try again.');
+            }
+
+            res.redirect(`/user/${id}`);
+        });
+    });
+});
+
+
 
 
 
