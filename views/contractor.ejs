@@ -24,6 +24,11 @@
             <p><strong>Mobile:</strong> <%= contract.phone_number%></p>
             <p><strong>Email:</strong> <%= contract.email %></p>
             <p><strong>District:</strong> <%= contract.district %></p>
+
+            <div class="contact-button-container">
+                <a href="mailto:<%= contract.email %>" class="contact-button">Mail</a>
+                <a href="http://localhost:8080/chat1/<%=contract.id%>" class="contact-button">Message</a>
+            </div>
         </div>
     </div>
 </body>

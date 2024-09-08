@@ -87,3 +87,24 @@ body {
 .product-details p strong {
     color: #222;
 }
+
+.contact-button-container {
+    margin-top: 20px;
+}
+
+.contact-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
