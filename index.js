@@ -312,7 +312,7 @@ app.get('/search', (req, res) => {
 
 
 app.get("/predict", (req, res) =>{
-    res.render("home.ejs");
+    res.render("analyzer.ejs");
 })
 
 // app.patch("/user/:id", (req, res) => {
